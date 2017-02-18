@@ -1,0 +1,113 @@
+---
+title       : BRICS Universities Interactive Chart
+author      : Pedro Magalhães Bernardo
+job         : February 18, 2017
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+<style>
+
+.title-slide {
+  background-color: #FFFFFF;
+}
+</style>
+
+## Introduction
+<br/>
+This work is the week 3 assignment for the Data Products course by John Hopkins University on Coursera, as part of their Data Science Specialization.  
+<br/>
+# BRICS 
+<br/>
+BRICS is the acronym for an association of five major emerging national economies: Brazil, Russia, India, China and South Africa.  
+<br/>
+The chart at the end of this presentation aims to compare the Universities from this five countries, featured in the Center for World University Rankings.
+
+---
+
+## Data
+
+The data used comes from the Center for World University Rankings and can be found <a href="https://www.kaggle.com/mylesoneill/world-university-rankings">here</a>.
+
+The comparison performed here takes in account the following features:
+  1. Publications
+  2. Alumni Employment
+  3. Final score
+  
+It is important to notice that in the original dataset, the features, except the final score, are ranked based, meaning that a lower value means a better rank. To make this analysis more intuitive, the features were scaled from 0 to 100, in which a higher value means a better rank.
+
+--- 
+
+## Chart
+
+```{r, echo=FALSE, message=FALSE, eval=FALSE}
+library(plyr)
+library(dplyr)
+library(plotly)
+cwurData <- read.csv("cwurData.csv")
+
+brics <- cwurData %>%
+  filter(country %in% c("Brazil", "Russia", "India", "China", "South Africa")) %>%
+  select(publications, score, alumni_employment, patents, institution, country) %>%
+  group_by(institution, country) %>%
+  summarise_each(funs(mean))
+
+
+
+scaleFuncMin <- function(x) {
+  minX <- min(x)
+  for (i in 1:length(x)) {
+    if(i==minX){
+      x[i] <- 100
+    }
+    else {
+      x[i] <- round((minX/x[i])*100, 2)
+    }
+  }
+  return(x)
+}
+
+scaleFuncMax <- function(x) {
+  maxX <- max(x)
+  for (i in 1:length(x)) {
+    if(i==maxX){
+      x[i] <- 100
+    }
+    else {
+      x[i] <- round((x[i]/maxX)*100, 2)
+    }
+  }
+  return(x)
+}
+
+
+for (i in 1:ncol(brics)) {
+  if(!names(brics[,i]) %in% c("institution", "country","score")){
+    brics[,i] <- scaleFuncMin(brics[,i])
+  }
+  else if(names(brics[,i]) == "score") {
+    brics[,i] <- scaleFuncMax(brics[,i])
+  }
+}
+
+
+chart <- brics %>%
+  plot_ly(y       =    ~publications, 
+          x       =    ~score, 
+          color   =    ~country, 
+          size    =    ~alumni_employment,
+          text    =    ~paste("Alumni Employment: ", alumni_employment, 
+                              "</br> University: ", institution),
+          mode    =    "markers",
+          type    =    "scatter",
+          marker  =    list(sizeref=0.1, sizemode="area"))
+
+htmlwidgets::saveWidget(chart, "plotly.html")
+```
+
+```{r wp, echo=FALSE, warning=FALSE, cache=FALSE, results='asis'}
+cat('<iframe src="plotly.html" width=100% height=10% allowtransparency="true"> </iframe>')
+```
