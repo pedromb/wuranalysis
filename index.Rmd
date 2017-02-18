@@ -18,7 +18,7 @@ knit        : slidify::knit2slides
 
 ## Introduction
 <br/>
-This work is the week 3 assignment for the Data Products course by John Hopkins University on Coursera, as part of their Data Science Specialization.  
+This work is the week 3 assignment for the Data Products course by Johns Hopkins University on Coursera, as part of their Data Science Specialization. You can find more about <a href="https://www.coursera.org/specializations/jhu-data-science">here</a>.   
 <br/>
 # BRICS 
 <br/>

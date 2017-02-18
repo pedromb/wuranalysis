@@ -18,13 +18,13 @@ knit        : slidify::knit2slides
 
 ## Introduction
 <br/>
-This work is the week 3 assignment for the Data Products course by John Hopkins University on Coursera, as part of their Data Science Specialization.  
+This work is the week 3 assignment for the Data Products course by Johns Hopkins University on Coursera, as part of their Data Science Specialization. You can find more about <a href="https://www.coursera.org/specializations/jhu-data-science">here</a>.   
 <br/>
 # BRICS 
 <br/>
 BRICS is the acronym for an association of five major emerging national economies: Brazil, Russia, India, China and South Africa.  
 <br/>
-The chart at the end of this slide aims to compare the Universities from this five countries, featured in the Center for World University Rankings.
+The chart at the end of this presentation aims to compare the Universities from this five countries, featured in the Center for World University Rankings.
 
 ---
 
